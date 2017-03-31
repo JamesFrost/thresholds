@@ -148,6 +148,29 @@ describe('thresholds', function()
 			if( !cleared )
 				throw new Error( 'Clear function not called' );
 		});
+
+		it(`calls breach when updates have been met only once`, function()
+		{
+			var breached = 0;
+
+			const thisThreshold = Threshold( '>', 100, 5 );
+
+			thisThreshold.on( 'breach', function( val )
+			{
+				breached++;
+			});
+
+			thisThreshold.on( 'clear', function()
+			{
+				throw new Error( 'Clear function called' );
+			});
+
+			for (var i = 0; i < 50; i++) 
+				thisThreshold.update(150);
+
+			if( breached != 1 )
+				throw new Error( `Breach function called ${breached} times` );
+		});
 	});
 
 	describe('less than', function()
@@ -296,6 +319,29 @@ describe('thresholds', function()
 
 			if( !cleared )
 				throw new Error( 'Clear function not called' );
+		});
+
+		it(`calls breach when updates have been met only once`, function()
+		{
+			var breached = 0;
+
+			const thisThreshold = Threshold( '<', 100, 5 );
+
+			thisThreshold.on( 'breach', function( val )
+			{
+				breached++;
+			});
+
+			thisThreshold.on( 'clear', function()
+			{
+				throw new Error( 'Clear function called' );
+			});
+
+			for (var i = 0; i < 50; i++) 
+				thisThreshold.update(50);
+
+			if( breached != 1 )
+				throw new Error( `Breach function called ${breached} times` );
 		});
 	});
 

@@ -44,7 +44,7 @@ Threshold.prototype.update = function( value )
 		++this._subsequentBreaches;
 		this._subsequentClears = 0;
 
-		if( this._subsequentBreaches >= this._updates )
+		if( this._subsequentBreaches >= this._updates && !this._breachEmitted )
 			this.emit( 'breach', value );
 	}
 	else 
@@ -53,7 +53,7 @@ Threshold.prototype.update = function( value )
 		this._subsequentBreaches = 0;
 
 		if( this._subsequentClears >= this._updates && this._breachEmitted )
-			this.emit( 'clear' );
+			this.emit( 'clear', value );
 	}
 };
 
