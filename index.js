@@ -21,6 +21,20 @@ const Threshold = function( comparisonOperator, boundary, updates )
 	this._updates = updates;
 	this._subsequentBreaches = 0;
 	this._subsequentClears = 0;
+
+	this._breachEmitted = false;
+
+	this.on('breach', function()
+	{
+		this._breachEmitted = true;
+
+	}.bind( this ));
+
+	this.on('clear', function()
+	{
+		this._breachEmitted = false;
+
+	}.bind( this ));
 };
 
 Threshold.prototype.update = function( value )
@@ -38,7 +52,7 @@ Threshold.prototype.update = function( value )
 		++this._subsequentClears;
 		this._subsequentBreaches = 0;
 
-		if( this._subsequentClears >= this._updates )
+		if( this._subsequentClears >= this._updates && this._breachEmitted )
 			this.emit( 'clear' );
 	}
 };

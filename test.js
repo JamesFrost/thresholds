@@ -22,7 +22,6 @@ describe('thresholds', function()
 
 			for (var i = 0; i < 4; i++) 
 				thisThreshold.update(150);
-			
 		});
 
 		it(`calls breach when updates have been met`, function()
@@ -112,7 +111,42 @@ describe('thresholds', function()
 
 			if( !breached )
 				throw new Error( 'Breach function not called' );
-				
+		});
+
+		it(`doesn't call clear when a breach hasn't occured first`, function()
+		{
+			var breached = false;
+			var cleared = false;
+
+			const thisThreshold = Threshold( '>', 100, 5 );
+
+			thisThreshold.on( 'clear', function()
+			{
+				cleared = true;
+			});
+
+			thisThreshold.on( 'breach', function()
+			{
+				breached = true;
+			});
+
+			for (var i = 0; i < 6; i++) 
+				thisThreshold.update(50);
+
+			if( cleared )
+				throw new Error( 'Clear function called' );
+
+			for (var i = 0; i < 6; i++) 
+				thisThreshold.update(150);
+
+			if( !breached )
+				throw new Error( 'Breach function not called' );
+
+			for (var i = 0; i < 6; i++) 
+				thisThreshold.update(50);
+
+			if( !cleared )
+				throw new Error( 'Clear function not called' );
 		});
 	});
 
@@ -225,6 +259,43 @@ describe('thresholds', function()
 			if( !breached )
 				throw new Error( 'Breach function not called' );
 				
+		});
+
+
+		it(`doesn't call clear when a breach hasn't occured first`, function()
+		{
+			var breached = false;
+			var cleared = false;
+
+			const thisThreshold = Threshold( '<', 100, 5 );
+
+			thisThreshold.on( 'clear', function()
+			{
+				cleared = true;
+			});
+
+			thisThreshold.on( 'breach', function()
+			{
+				breached = true;
+			});
+
+			for (var i = 0; i < 6; i++) 
+				thisThreshold.update(150);
+
+			if( cleared )
+				throw new Error( 'Clear function called' );
+
+			for (var i = 0; i < 6; i++) 
+				thisThreshold.update(50);
+
+			if( !breached )
+				throw new Error( 'Breach function not called' );
+
+			for (var i = 0; i < 6; i++) 
+				thisThreshold.update(150);
+
+			if( !cleared )
+				throw new Error( 'Clear function not called' );
 		});
 	});
 });

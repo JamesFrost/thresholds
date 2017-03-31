@@ -25,6 +25,10 @@ cpuUsage.on( 'clear', function()
 
 cpuUsage.update( 50 ); 
 
+cpuUsage.update( 99 ); 
+cpuUsage.update( 95 ); 
+// breach event emitted
+
 ```
 ## API
 #### ```operator```
