@@ -45,7 +45,7 @@ Threshold.prototype.update = function( value )
 		this._subsequentClears = 0;
 
 		if( this._subsequentBreaches >= this._updates )
-			this.emit( 'breach' );
+			this.emit( 'breach', value );
 	}
 	else 
 	{

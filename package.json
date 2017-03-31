@@ -1,6 +1,6 @@
 {
   "name": "thresholds",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Trigger events when a threshold has been breached for a period of time.",
   "main": "index.js",
   "scripts": {

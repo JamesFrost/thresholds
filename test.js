@@ -30,7 +30,7 @@ describe('thresholds', function()
 
 			const thisThreshold = Threshold( '>', 100, 5 );
 
-			thisThreshold.on( 'breach', function()
+			thisThreshold.on( 'breach', function( val )
 			{
 				breached = true;
 			});
@@ -297,5 +297,28 @@ describe('thresholds', function()
 			if( !cleared )
 				throw new Error( 'Clear function not called' );
 		});
+	});
+
+	it(`passes metic value to breach event listeners`, function()
+	{
+		var breached = false;
+
+		const thisThreshold = Threshold( '>', 100, 5 );
+
+		thisThreshold.on( 'breach', function( val )
+		{
+			breached = val;
+		});
+
+		thisThreshold.on( 'clear', function()
+		{
+			throw new Error( 'Clear function called' );
+		});
+
+		for (var i = 0; i < 5; i++) 
+			thisThreshold.update(150);
+
+		if( !breached || breached !== 150 )
+			throw new Error( 'Breach function not called' );
 	});
 });
